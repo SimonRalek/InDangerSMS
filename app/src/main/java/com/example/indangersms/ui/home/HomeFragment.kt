@@ -86,8 +86,8 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-        binding.sendSmsButton.backgroundTintList =
-            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red))
+        binding.sendSmsButton.backgroundTintList = null
+//            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.red))
 
         setSubtitle()
 

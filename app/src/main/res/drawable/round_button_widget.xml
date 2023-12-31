@@ -26,18 +26,4 @@
         </shape>
     </item>
 
-    <item
-        android:bottom="29dp"
-        android:left="25dp"
-        android:right="29dp"
-        android:top="25dp">
-        <shape android:shape="oval">
-            <solid android:color="@android:color/transparent" />
-            <stroke
-                android:width="3dp"
-                android:color="#5F1616" />
-        </shape>
-    </item>
-
-
 </layer-list>

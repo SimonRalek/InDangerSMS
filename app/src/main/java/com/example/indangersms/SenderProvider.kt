@@ -3,6 +3,7 @@ package com.example.indangersms
 import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -155,11 +156,23 @@ class SenderProvider(private var context: Context, private var alert: Boolean = 
             notificationManager.createNotificationChannel(channel)
         }
 
+        val intent = Intent(context, MainActivity::class.java) // Replace YourMainActivity::class.java with the actual main activity of your app
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         val builder = NotificationCompat.Builder(context, "emergency_alerts")
             .setContentTitle(title)
             .setContentText(message)
             .setSmallIcon(R.drawable.baseline_warning_amber_24)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
 
         notificationManager.notify(1, builder.build())
 

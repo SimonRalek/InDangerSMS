@@ -65,8 +65,8 @@ class EmergencyWidget : AppWidgetProvider() {
                 if (testMode) {
                     if (isPermission) {
                         senderProvider.sendNotification(
-                            "Message Not Sent",
-                            "Message was unsuccesfully sent, please disable Test Mode before using the widget.",
+                            "Test Mode is On",
+                            "Message was not sent, please disable Test Mode before using the widget.",
                             context
                         )
                     }
@@ -84,7 +84,7 @@ class EmergencyWidget : AppWidgetProvider() {
                 }
             } else if (isPermission) {
                 senderProvider.sendNotification(
-                    "Message Not Sent",
+                    "Emergency Contact or SMS not set up",
                     "Please first set your emergency contact and message content.",
                     context
                 )
@@ -100,7 +100,6 @@ class EmergencyWidget : AppWidgetProvider() {
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
     }
-
 
     private fun getPendingSelfIntent(
         context: Context,
