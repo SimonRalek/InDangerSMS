@@ -15,30 +15,40 @@ import com.google.android.gms.location.LocationServices
 class SenderProvider(private var context: Context, private var alert: Boolean = true) {
 
     fun sendSms(phoneNumber: String?, message: String?, callback: (Boolean) -> Unit) {
+        val isPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            PermissionManager(context).checkOutsidePermission(
+                android.Manifest.permission.POST_NOTIFICATIONS,
+                "Missing Notifications Permission",
+                "To notify you about events within the app, we require permission to send notifications.",
+                alert
+            )
+        } else {
+            true
+        }
+
         getFullMessage(message) { fullMessage ->
             if (fullMessage != null) {
                 context.getSystemService(SmsManager::class.java)
                     .sendTextMessage(phoneNumber, null, fullMessage, null, null)
-                if (PermissionManager(context).checkOutsidePermission(
-                        android.Manifest.permission.POST_NOTIFICATIONS,
-                        "Missing Notifications Permission",
-                        "To notify you about events within the app, we require permission to send notifications.",
-                        alert
-                    )
-                ) {
+                if (isPermission) {
                     sendNotification("Message Sent", "Message was successfully sent!", context)
                 } else {
                     Toast.makeText(context, "Message Sent", Toast.LENGTH_LONG).show()
                 }
                 callback(true)
             } else {
-                val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-                builder.setTitle("Location Error")
-                    .setMessage("Unable to retrieve location. Make sure location services are enabled.")
-                    .setPositiveButton(android.R.string.ok) { _, _ ->
-                    }
-                builder.create().show()
-                callback(false)
+                if (alert) {
+                    val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+                    builder.setTitle("Location Error")
+                        .setMessage("Unable to retrieve location. Make sure location services are enabled.")
+                        .setPositiveButton(android.R.string.ok) { _, _ ->
+                        }
+                    builder.create().show()
+                    callback(false)
+                } else if (isPermission) {
+                   sendNotification("Location Error", "Unable to retrieve location. Make sure location services are enabled.", context)
+                }
+
             }
         }
     }
@@ -47,7 +57,7 @@ class SenderProvider(private var context: Context, private var alert: Boolean = 
         getLocation { result ->
             result?.let {
                 val location = result
-                val fullMessage = "$message - $location"
+                val fullMessage = "$message$location"
                 callback(fullMessage)
             } ?: callback(null)
         }
@@ -60,11 +70,12 @@ class SenderProvider(private var context: Context, private var alert: Boolean = 
         if (permManager.checkOutsidePermission(
                 android.Manifest.permission.ACCESS_FINE_LOCATION,
                 "Missing Location Permission",
-                "To send a SMS message with location, you need to permit the location permission"
+                "To send a SMS message with location, you need to permit the location permission",
+                alert
             ) && permManager.checkOutsidePermission(
                 android.Manifest.permission.SEND_SMS,
                 "Missing Send SMS Permission",
-                "To send a SMS message, you need to permit the SMS permission"
+                "To send a SMS message, you need to permit the SMS permission", alert
             )
         ) {
             fusedLocationClient.lastLocation

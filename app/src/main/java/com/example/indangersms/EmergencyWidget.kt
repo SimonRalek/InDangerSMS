@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.widget.RemoteViews
 import androidx.preference.PreferenceManager
 
@@ -44,17 +45,21 @@ class EmergencyWidget : AppWidgetProvider() {
         val permManager = PermissionManager(context)
 
         if (intent.action == "buttonClick") {
-            val message = prefManager.getString("message", "")
-            val contactNumber = prefManager.getString("contactNumber", "")
+            val message = prefManager.getString("message", null) + " - "
+            val contactNumber = prefManager.getString("contactNumber", null)
             val testMode = prefManager.getBoolean("test_mode", false)
             val senderProvider = SenderProvider(context, false)
 
-            val isPermission = permManager.checkOutsidePermission(
-                android.Manifest.permission.POST_NOTIFICATIONS,
-                "",
-                "",
-                false
-            )
+            val isPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                permManager.checkOutsidePermission(
+                    android.Manifest.permission.POST_NOTIFICATIONS,
+                    "",
+                    "",
+                    false
+                )
+            } else {
+                true
+            }
 
             if (senderProvider.checkSettings(contactNumber, message)) {
                 if (testMode) {
