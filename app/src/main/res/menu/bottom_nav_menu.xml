@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/navigation_tips"
+        android:icon="@drawable/tips"
+        android:title="@string/title_tips" />
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/baseline_warning_amber_24"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/navigation_notifications"
+        android:icon="@drawable/baseline_question_mark_24"
+        android:title="@string/title_notifications" />
+
+</menu>

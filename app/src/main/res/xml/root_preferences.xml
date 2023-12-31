@@ -1,0 +1,48 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:icon="@drawable/baseline_insert_comment_24"
+        app:title="@string/messages_header">
+
+        <EditTextPreference
+            app:key="text_message"
+            app:summary="The text you want to send"
+            app:title="Text Message"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:icon="@drawable/baseline_contact_emergency_24"
+        app:title="@string/contact">
+
+        <Preference
+            app:key="contact_picker_preference"
+            app:summary="Click to pick contact"
+            app:title="Select Contact"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:icon="@drawable/baseline_format_paint_24"
+        app:title="@string/Theme">
+
+        <SwitchPreferenceCompat
+            app:key="theme_preference"
+            app:title="@string/dark_theme" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:icon="@drawable/baseline_developer_mode_24"
+        app:title="@string/test">
+
+        <SwitchPreferenceCompat
+            app:key="test_mode"
+            app:title="@string/test_mode" />
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
