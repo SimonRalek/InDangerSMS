@@ -16,7 +16,7 @@ In-Danger SMS is an Android application designed to help users quickly send emer
 
 ### Installation
 
-1. Download the APK file from the [releases](https://github.com/yourusername/in-danger-sms/releases) page.
+1. Download the APK file from the [releases](https://github.com/simonralek/indangersms/releases) page.
 2. Enable installation from unknown sources in your device settings.
 3. Install the APK on your Android device.
 
