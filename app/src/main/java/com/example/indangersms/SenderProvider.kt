@@ -27,17 +27,18 @@ class SenderProvider(private var context: Context, private var alert: Boolean = 
             true
         }
 
-        getFullMessage(message) { fullMessage ->
-            if (fullMessage != null) {
-                context.getSystemService(SmsManager::class.java)
-                    .sendTextMessage(phoneNumber, null, fullMessage, null, null)
+        getLocation { result ->
+            result?.let {
+                val smsManager = context.getSystemService(SmsManager::class.java) as SmsManager
+                smsManager.sendTextMessage(phoneNumber, null, message, null, null)
+                smsManager.sendTextMessage(phoneNumber, null, result, null, null)
                 if (isPermission) {
                     sendNotification("Message Sent", "Message was successfully sent!", context)
                 } else {
                     Toast.makeText(context, "Message Sent", Toast.LENGTH_LONG).show()
                 }
                 callback(true)
-            } else {
+            } ?: run {
                 if (alert) {
                     val builder: AlertDialog.Builder = AlertDialog.Builder(context)
                     builder.setTitle("Location Error")
@@ -54,15 +55,15 @@ class SenderProvider(private var context: Context, private var alert: Boolean = 
         }
     }
 
-    private fun getFullMessage(message: String?, callback: (String?) -> Unit) {
-        getLocation { result ->
-            result?.let {
-                val location = result
-                val fullMessage = "$message$location"
-                callback(fullMessage)
-            } ?: callback(null)
-        }
-    }
+//    private fun getFullMessage(message: String?, callback: (String?) -> Unit) {
+//        getLocation { result ->
+//            result?.let {
+//                val location = result
+//                val fullMessage = "$message$location"
+//                callback(fullMessage)
+//            } ?: callback(null)
+//        }
+//    }
 
     fun getLocation(callback: (String?) -> Unit) {
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)

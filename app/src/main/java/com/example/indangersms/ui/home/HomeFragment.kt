@@ -69,7 +69,7 @@ class HomeFragment : Fragment() {
                         .setDuration(150)
                 }
 
-            val message = prefManager.getString("message", null) + " - "
+            val message = prefManager.getString("message", null)
             val contactNumber = prefManager.getString("contactNumber", null)
             val isTestMode = prefManager.getBoolean("test_mode", false)
 
@@ -79,7 +79,9 @@ class HomeFragment : Fragment() {
                 if (isTestMode) {
                     prefManager.getString("contactNumber", "unknown")
                         ?.let { it1 ->
-                            showSimulatedSMSDialog(it1, message)
+                            if (message != null) {
+                                showSimulatedSMSDialog(it1, message)
+                            }
                         }
                 } else {
                     senderProvider.sendSms(contactNumber, message) {}
@@ -109,8 +111,7 @@ class HomeFragment : Fragment() {
         senderProvider.getLocation { result ->
             result?.let {
                 location = result
-
-                val spannableString = SpannableString("$message $location")
+                val spannableString = SpannableString("$message\n$location")
 
                 val clickableSpan = object : ClickableSpan() {
                     override fun onClick(widget: View) {

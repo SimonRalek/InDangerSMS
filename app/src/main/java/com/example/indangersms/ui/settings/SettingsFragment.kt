@@ -2,6 +2,7 @@ package com.example.indangersms.ui.settings
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.text.InputFilter
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
@@ -24,6 +25,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val msg = findPreference<EditTextPreference>("text_message")
         val themeSwitch = findPreference<SwitchPreferenceCompat>("theme_preference")
         val testMode = findPreference<SwitchPreferenceCompat>("test_mode")
+
+        msg?.setOnBindEditTextListener { editText ->
+            editText.filters = arrayOf(InputFilter.LengthFilter(70))
+        }
 
         if ((resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) {
             if (themeSwitch != null) {

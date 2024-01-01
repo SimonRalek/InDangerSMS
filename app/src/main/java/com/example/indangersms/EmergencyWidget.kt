@@ -45,7 +45,7 @@ class EmergencyWidget : AppWidgetProvider() {
         val permManager = PermissionManager(context)
 
         if (intent.action == "buttonClick") {
-            val message = prefManager.getString("message", null) + " - "
+            val message = prefManager.getString("message", null)
             val contactNumber = prefManager.getString("contactNumber", null)
             val testMode = prefManager.getBoolean("test_mode", false)
             val senderProvider = SenderProvider(context, false)
